@@ -13,7 +13,12 @@
     "start": "node --openssl-legacy-provider ./scripts/run-electron-webpack.js dev",
     "build": "node --openssl-legacy-provider ./scripts/run-electron-webpack.js",
     "dist": "node --openssl-legacy-provider ./scripts/run-electron-webpack.js && electron-builder --publish never && node ./scripts/make-mac-zip.js",
-    "dist:mac:arm64": "node --openssl-legacy-provider ./scripts/run-electron-webpack.js && electron-builder --mac --arm64 --publish never && node ./scripts/make-mac-zip.js"
+    "build:mac:arm64": "node --openssl-legacy-provider ./scripts/run-electron-webpack.js && electron-builder --mac --arm64 --dir --publish never",
+    "sign:mac:arm64": "codesign --force --deep --options runtime --timestamp=none --sign - \"dist/mac-arm64/Material Colors.app\"",
+    "verify:mac:arm64": "codesign --verify --deep --strict --verbose=4 \"dist/mac-arm64/Material Colors.app\" && ls -la \"dist/mac-arm64/Material Colors.app/Contents\"",
+    "zip:mac:arm64": "ditto -c -k --keepParent \"dist/mac-arm64/Material Colors.app\" \"dist/Material-Colors-v1.0.0-mac-arm64.zip\"",
+    "dmg:mac:arm64": "rm -rf \"dist/dmg-stage\" && mkdir -p \"dist/dmg-stage\" && cp -R \"dist/mac-arm64/Material Colors.app\" \"dist/dmg-stage/\" && ln -s /Applications \"dist/dmg-stage/Applications\" && hdiutil create -volname \"Material Colors\" -srcfolder \"dist/dmg-stage\" -ov -format UDZO \"dist/Material-Colors-v1.0.0-mac-arm64.dmg\"",
+    "dist:mac:arm64": "rm -rf dist && yarn build:mac:arm64 && yarn sign:mac:arm64 && yarn verify:mac:arm64 && yarn zip:mac:arm64 && yarn dmg:mac:arm64"
   },
   "build": {
     "appId": "io.omnidesign.materialcolorsapplesilicon",

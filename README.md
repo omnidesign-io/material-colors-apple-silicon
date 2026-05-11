@@ -30,6 +30,14 @@ $ CSC_IDENTITY_AUTO_DISCOVERY=false yarn dist:mac:arm64
 
 This will create an **arm64** app bundle under `dist/mac-arm64/` (and also a zip and dmg in `dist/`).
 
+## Installing from releases
+
+Since this app was not signed with an Apple Developer ID, run this in terminal after installation:
+
+```
+xattr -dr com.apple.quarantine "/Applications/Material Colors.app"
+```
+
 ## Auto-updates
 
 This fork has the original Roman Nurik auto-update feed **disabled**.

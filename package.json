@@ -18,6 +18,9 @@
   "build": {
     "appId": "io.omnidesign.materialcolorsapplesilicon",
     "mac": {
+      "identity": "-",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
       "target": [
         "dir",
         "dmg"

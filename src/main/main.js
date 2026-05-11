@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { UPDATE_FEED_URL } from 'common/config';
-import { app, autoUpdater, BrowserWindow, ipcMain, Menu, nativeTheme, Tray } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, nativeTheme, Tray } from 'electron';
 import electronPositioner from 'electron-positioner';
 import EventEmitter from 'events';
 import fs from 'fs';
@@ -69,13 +68,6 @@ app.on('ready', () => {
 
   readPrefs();
   setupUiMode(uiMode, { firstRun: true });
-  if (!DEV_MODE) {
-    try {
-      checkForAppUpdates();
-    } catch (e) {
-      console.error(e);
-    }
-  }
 });
 
 
@@ -392,31 +384,6 @@ function writePrefs() {
   fs.writeFileSync(app.getPath('userData') + '/prefs.json', JSON.stringify({
     uiMode
   }));
-}
-
-
-function checkForAppUpdates() {
-  let packageInfo = require('@/package.json');
-
-  let query = {
-    version: app.getVersion(),
-    bundleId: packageInfo.appBundleId
-  };
-
-  let qs = Object.keys(query)
-    .map(k => k + '=' + encodeURIComponent(query[k]))
-    .join('&');
-
-  autoUpdater.setFeedURL(UPDATE_FEED_URL + '?' + qs);
-  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDate, updateURL) => {
-    mainWindow.webContents.send('update-downloaded', releaseName);
-    ipcMain.on('install-update', () => autoUpdater.quitAndInstall());
-  });
-  autoUpdater.on('error', error => {
-    console.error('Error updating: ' + error);
-    // electron.dialog.showErrorBox('error', error.toString());
-  });
-  autoUpdater.checkForUpdates();
 }
 
 

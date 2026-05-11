@@ -61,7 +61,7 @@ body {
   z-index: 100;
   padding: 4px;
   display: flex;
-  cursor: default;
+  cursor: pointer;
   @include nodrag;
 
   &::before {
@@ -274,7 +274,7 @@ body {
   font-size: 12px;
   font-weight: 500;
   line-height: 16px;
-  cursor: default;
+  cursor: pointer;
   @include nodrag;
 }
 
@@ -293,7 +293,7 @@ body {
   font-size: 10px;
   font-weight: 500;
   line-height: 16px;
-  cursor: default;
+  cursor: pointer;
   padding: 0 2px;
   border-radius: 2px;
   @include nodrag;
@@ -322,7 +322,7 @@ body {
 
 .update-banner {
   grid-area: update-banner;
-  cursor: default;
+  cursor: pointer;
   padding: 8px 12px;
   font-size: 12px;
   line-height: 16px;

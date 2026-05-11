@@ -10,8 +10,10 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf build dist .electron-cache",
-    "start": "electron-webpack dev",
-    "dist": "electron-webpack && electron-builder && node ./scripts/make-mac-zip.js"
+    "start": "node --openssl-legacy-provider ./scripts/run-electron-webpack.js dev",
+    "build": "node --openssl-legacy-provider ./scripts/run-electron-webpack.js",
+    "dist": "node --openssl-legacy-provider ./scripts/run-electron-webpack.js && electron-builder --publish never && node ./scripts/make-mac-zip.js",
+    "dist:mac:arm64": "node --openssl-legacy-provider ./scripts/run-electron-webpack.js && electron-builder --mac --arm64 --publish never && node ./scripts/make-mac-zip.js"
   },
   "build": {
     "appId": "net.nurik.roman.materialcolors",
@@ -39,12 +41,12 @@
     "@babel/preset-react": "^7.12.13",
     "@babel/register": "^7.13.8",
     "archiver": "^5.3.0",
-    "css-loader": "5",
+    "css-loader": "^3.6.0",
     "electron": "^11.0.3",
-    "electron-builder": "^22.10.5",
+    "electron-builder": "^24.13.3",
     "electron-webpack": "^2.8.2",
-    "node-sass": "^5.0.0",
     "plist": "^3.0.1",
+    "sass": "^1.77.0",
     "regenerator-runtime": "^0.13.7",
     "sass-loader": "10",
     "webpack": "^4.46.0"

@@ -20,5 +20,16 @@ If you want to customize the app for your own needs, you can do a custom build.
      $ yarn start
      ```
 
-Note that you'll probably want to disable the auto-updating mechanism by emptying out the `checkForUpdates` method in
-[main.js](https://github.com/romannurik/MaterialColorsApp/blob/master/src/main/main.js).
+## Packaging a local macOS arm64 .app (Apple Silicon)
+
+To produce a local Apple Silicon `.app`:
+
+```
+$ CSC_IDENTITY_AUTO_DISCOVERY=false yarn dist:mac:arm64
+```
+
+This will create an **arm64** app bundle under `dist/mac-arm64/` (and also a zip in `dist/`).
+
+## Auto-updates
+
+This fork has the original Roman Nurik auto-update feed **disabled**.

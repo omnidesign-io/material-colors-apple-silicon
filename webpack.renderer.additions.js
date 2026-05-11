@@ -16,22 +16,53 @@
 
 const path = require('path');
 
-module.exports = config => {
-  for (let rule of config.module.rules) {
-    if (!rule.use || !rule.use.length) {
-      continue;
-    }
-    for (let loader of Array.from(rule.use || []).filter(({ loader }) => loader === 'css-loader')) {
-      loader.options = {
-        ...(loader.options || {}),
-        modules: {
-          mode: 'local',
-          exportLocalsConvention: 'camelCase',
-          localIdentName: '[local]-[hash:base64:5]',
-        }
-      };
-    }
+function forEachRule(rules, fn) {
+  if (!rules) {
+    return;
   }
+  for (const rule of rules) {
+    if (rule.oneOf) {
+      forEachRule(rule.oneOf, fn);
+    }
+    fn(rule);
+  }
+}
+
+module.exports = config => {
+  forEachRule(config.module.rules, rule => {
+    const uses = rule.use;
+    if (!uses) {
+      return;
+    }
+    const list = Array.isArray(uses) ? uses : [uses];
+    for (const entry of list) {
+      if (typeof entry === 'string') {
+        continue;
+      }
+      const name = entry.loader || '';
+      if (name.includes('sass-loader')) {
+        entry.options = {
+          ...(entry.options || {}),
+          implementation: require('sass'),
+        };
+      }
+      if (name === 'css-loader' || name.endsWith('/css-loader')) {
+        const prev = entry.options || {};
+        const prevModules = prev.modules;
+        const mergedModules =
+          prevModules &&
+          typeof prevModules === 'object' &&
+          !Array.isArray(prevModules)
+            ? { ...prevModules, localIdentName: '[local]-[hash:base64:5]' }
+            : { mode: 'local', localIdentName: '[local]-[hash:base64:5]' };
+        entry.options = {
+          ...prev,
+          modules: mergedModules,
+          localsConvention: 'camelCase',
+        };
+      }
+    }
+  });
 
   config.resolve.alias['static'] = path.resolve(__dirname, 'static');
   config.resolve.alias['@'] = process.env.AT_ROOT || path.resolve(__dirname);

@@ -15,14 +15,25 @@
  */
 
 import fs from 'fs';
+import { homedir } from 'os';
 import path from 'path';
-
-import { app } from 'electron';
 
 const CONFIG_FILENAME = '.materialcolorsapp.json';
 
+function getHomeDirectory() {
+  try {
+    const { app } = require('electron');
+    if (app && typeof app.getPath === 'function') {
+      return app.getPath('home');
+    }
+  } catch (e) {
+    /* not running inside Electron */
+  }
+  return homedir();
+}
+
 export function loadConfig() {
-  const configFilePath = path.join(app.getPath('home'), CONFIG_FILENAME);
+  const configFilePath = path.join(getHomeDirectory(), CONFIG_FILENAME);
 
   try {
     let data = fs.existsSync(configFilePath) && fs.readFileSync(configFilePath);

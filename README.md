@@ -22,13 +22,13 @@ If you want to customize the app for your own needs, you can do a custom build.
 
 ## Packaging a local macOS arm64 .app (Apple Silicon)
 
-To produce a local Apple Silicon `.app`:
+To produce a local Apple Silicon `.app` (and a `.dmg`):
 
 ```
 $ CSC_IDENTITY_AUTO_DISCOVERY=false yarn dist:mac:arm64
 ```
 
-This will create an **arm64** app bundle under `dist/mac-arm64/` (and also a zip in `dist/`).
+This will create an **arm64** app bundle under `dist/mac-arm64/` (and also a zip and dmg in `dist/`).
 
 ## Auto-updates
 

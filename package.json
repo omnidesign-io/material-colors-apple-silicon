@@ -2,8 +2,8 @@
   "name": "material-colors",
   "appDisplayName": "Material Colors",
   "productName": "Material Colors",
-  "appBundleId": "net.nurik.roman.materialcolors",
-  "version": "2.0.3",
+  "appBundleId": "io.omnidesign.materialcolorsapplesilicon",
+  "version": "1.0.0",
   "description": "A quick color palette for material design colors.",
   "main": "main.js",
   "author": "Roman Nurik",
@@ -16,9 +16,12 @@
     "dist:mac:arm64": "node --openssl-legacy-provider ./scripts/run-electron-webpack.js && electron-builder --mac --arm64 --publish never && node ./scripts/make-mac-zip.js"
   },
   "build": {
-    "appId": "net.nurik.roman.materialcolors",
+    "appId": "io.omnidesign.materialcolorsapplesilicon",
     "mac": {
-      "target": "dir",
+      "target": [
+        "dir",
+        "dmg"
+      ],
       "category": "public.app-category.developer-tools"
     }
   },
